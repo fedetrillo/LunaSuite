@@ -1,0 +1,28 @@
+{
+    "package_name": "LunaSuite",
+    "id": "com.fedetrillo.lunasuite",
+    "title": "LunaSuite",
+    "name": "LunaSuite",
+    "version": "1.0.0",
+    "manufacturer": "Fede Trillo",
+    "contact": "fedetrillo@gmail.com",
+    "description": [
+        "Render plug-ins onto a selection, AudioSuite style: a chain of up to three plug-ins with presets, several tracks at once, a tempo-synced tail that covers what follows or goes to its own track, edge fades and an optional copy of the original."
+    ],
+    "categories": [
+        "Mixing & Mastering",
+        "Workflow"
+    ],
+    "icon": "icon.png",
+    "sdk_version": "3.1.2",
+    "min_luna_version": "3.1.2",
+    "engines": [
+        "luna"
+    ],
+    "html": "index.html",
+    "target": "window",
+    "floating": true,
+    "show_with_session": true,
+    "width": 380,
+    "height": 700
+}
