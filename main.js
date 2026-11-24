@@ -7,7 +7,7 @@
 
 (() => {
   const $ = (id) => document.getElementById(id);
-  const VERSION = '1.0.0';
+  const VERSION = '1.1.0';
   const KEY = 'com.fedetrillo.lunasuite.';
   const store = {
     get: (k) => { try { return JSON.parse(localStorage.getItem(KEY + k)); } catch { return null; } },
@@ -19,10 +19,12 @@
   const BARS = ['1', '2', '4'];
   const MODS = [['n', 1], ['d', 1.5], ['t', 2 / 3]];
   const FADES = [0, 5, 10, 20];
+  const COLORS = ['yellow', 'orange', 'red', 'green', 'blue', 'pink', 'purple'];
 
   // ---- Texts ---------------------------------------------------------------------------------
   const I18N = {
-    es: { _name: 'Español', sel: 'Selección', chain: 'Cadena de plugins', search: 'Buscar plugin…', add: 'Añadir', recent: 'Recientes', favs: 'Favoritos', all: 'Todos',
+    es: { makers: 'Fabricantes', other: 'Otros', color: 'Color', cYellow: 'Amarillo', cOrange: 'Naranja', cRed: 'Rojo', cGreen: 'Verde', cBlue: 'Azul', cPink: 'Rosa', cPurple: 'Morado',
+      _name: 'Español', sel: 'Selección', chain: 'Cadena de plugins', search: 'Buscar plugin…', add: 'Añadir', recent: 'Recientes', favs: 'Favoritos', all: 'Todos',
       noChain: 'Añade hasta 3 plugins de la lista (doble clic o «Añadir»).', preset: '(su preset)', tail: 'Cola', mod: 'Figura', dest: 'La cola', fade: 'Fundidos', keep: 'Guardar el original en una pista silenciada',
       modN: 'normal', modD: 'con puntillo', modT: 'tresillo', cover: 'tapa lo siguiente', track: 'en pista aparte', bars: 'comp.', none: 'sin',
       prep: '1 · Preparar y abrir plugins', listen: 'Escuchar', stop: 'Parar', render: '2 · Renderizar', cancel: 'Cancelar', dark: 'Oscuro', grey: 'Gris',
@@ -30,7 +32,8 @@
       preparing: 'Preparando…', ready: 'Ajusta los plugins y pulsa Renderizar. «Escuchar» suena en solo y en bucle.', rendering: 'Renderizando {i} de {n}…',
       done: 'Hecho: {n} pista(s). Cmd+Z en LUNA para deshacer.', failed: 'Error: {e}', cancelled: 'Cancelado', waiting: 'Esperando a LUNA…', noSession: 'Abre una sesión en LUNA.',
       copied: 'Informe copiado', original: 'original', tailName: 'cola' },
-    en: { _name: 'English', sel: 'Selection', chain: 'Plug-in chain', search: 'Search plug-ins…', add: 'Add', recent: 'Recent', favs: 'Favorites', all: 'All',
+    en: { makers: 'Manufacturers', other: 'Other', color: 'Colour', cYellow: 'Yellow', cOrange: 'Orange', cRed: 'Red', cGreen: 'Green', cBlue: 'Blue', cPink: 'Pink', cPurple: 'Purple',
+      _name: 'English', sel: 'Selection', chain: 'Plug-in chain', search: 'Search plug-ins…', add: 'Add', recent: 'Recent', favs: 'Favorites', all: 'All',
       noChain: 'Add up to 3 plug-ins from the list (double-click or "Add").', preset: '(its preset)', tail: 'Tail', mod: 'Note', dest: 'The tail', fade: 'Fades', keep: 'Keep the original on a muted track',
       modN: 'straight', modD: 'dotted', modT: 'triplet', cover: 'covers what follows', track: 'on its own track', bars: 'bar', none: 'none',
       prep: '1 · Prepare and open plug-ins', listen: 'Listen', stop: 'Stop', render: '2 · Render', cancel: 'Cancel', dark: 'Dark', grey: 'Grey',
@@ -38,7 +41,8 @@
       preparing: 'Preparing…', ready: 'Tweak the plug-ins and press Render. "Listen" plays it soloed, looped.', rendering: 'Rendering {i} of {n}…',
       done: 'Done: {n} track(s). Cmd+Z in LUNA to undo.', failed: 'Error: {e}', cancelled: 'Cancelled', waiting: 'Waiting for LUNA…', noSession: 'Open a session in LUNA.',
       copied: 'Report copied', original: 'original', tailName: 'tail' },
-    ca: { _name: 'Català', sel: 'Selecció', chain: 'Cadena de plugins', search: 'Cercar plugin…', add: 'Afegir', recent: 'Recents', favs: 'Preferits', all: 'Tots',
+    ca: { makers: 'Fabricants', other: 'Altres', color: 'Color', cYellow: 'Groc', cOrange: 'Taronja', cRed: 'Vermell', cGreen: 'Verd', cBlue: 'Blau', cPink: 'Rosa', cPurple: 'Lila',
+      _name: 'Català', sel: 'Selecció', chain: 'Cadena de plugins', search: 'Cercar plugin…', add: 'Afegir', recent: 'Recents', favs: 'Preferits', all: 'Tots',
       noChain: 'Afegeix fins a 3 plugins de la llista (doble clic o «Afegir»).', preset: '(el seu preset)', tail: 'Cua', mod: 'Figura', dest: 'La cua', fade: 'Fosos', keep: 'Desar l’original en una pista silenciada',
       modN: 'normal', modD: 'amb punt', modT: 'tresset', cover: 'tapa el que segueix', track: 'en pista a part', bars: 'comp.', none: 'sense',
       prep: '1 · Preparar i obrir plugins', listen: 'Escoltar', stop: 'Aturar', render: '2 · Renderitzar', cancel: 'Cancel·lar', dark: 'Fosc', grey: 'Gris',
@@ -46,7 +50,8 @@
       preparing: 'Preparant…', ready: 'Ajusta els plugins i prem Renderitzar. «Escoltar» sona en solo i en bucle.', rendering: 'Renderitzant {i} de {n}…',
       done: 'Fet: {n} pista(es). Cmd+Z a LUNA per desfer.', failed: 'Error: {e}', cancelled: 'Cancel·lat', waiting: 'Esperant LUNA…', noSession: 'Obre una sessió a LUNA.',
       copied: 'Informe copiat', original: 'original', tailName: 'cua' },
-    fr: { _name: 'Français', sel: 'Sélection', chain: 'Chaîne de plug-ins', search: 'Chercher un plug-in…', add: 'Ajouter', recent: 'Récents', favs: 'Favoris', all: 'Tous',
+    fr: { makers: 'Fabricants', other: 'Autres', color: 'Couleur', cYellow: 'Jaune', cOrange: 'Orange', cRed: 'Rouge', cGreen: 'Vert', cBlue: 'Bleu', cPink: 'Rose', cPurple: 'Violet',
+      _name: 'Français', sel: 'Sélection', chain: 'Chaîne de plug-ins', search: 'Chercher un plug-in…', add: 'Ajouter', recent: 'Récents', favs: 'Favoris', all: 'Tous',
       noChain: 'Ajoutez jusqu’à 3 plug-ins de la liste (double-clic ou « Ajouter »).', preset: '(son preset)', tail: 'Queue', mod: 'Figure', dest: 'La queue', fade: 'Fondus', keep: 'Garder l’original sur une piste muette',
       modN: 'normale', modD: 'pointée', modT: 'triolet', cover: 'couvre la suite', track: 'sur sa propre piste', bars: 'mes.', none: 'aucune',
       prep: '1 · Préparer et ouvrir les plug-ins', listen: 'Écouter', stop: 'Arrêter', render: '2 · Rendre', cancel: 'Annuler', dark: 'Sombre', grey: 'Gris',
@@ -54,7 +59,8 @@
       preparing: 'Préparation…', ready: 'Réglez les plug-ins et appuyez sur Rendre. « Écouter » joue en solo, en boucle.', rendering: 'Rendu {i} sur {n}…',
       done: 'Terminé : {n} piste(s). Cmd+Z dans LUNA pour annuler.', failed: 'Erreur : {e}', cancelled: 'Annulé', waiting: 'En attente de LUNA…', noSession: 'Ouvrez une session dans LUNA.',
       copied: 'Rapport copié', original: 'original', tailName: 'queue' },
-    de: { _name: 'Deutsch', sel: 'Auswahl', chain: 'Plug-in-Kette', search: 'Plug-in suchen…', add: 'Hinzufügen', recent: 'Zuletzt', favs: 'Favoriten', all: 'Alle',
+    de: { makers: 'Hersteller', other: 'Andere', color: 'Farbe', cYellow: 'Gelb', cOrange: 'Orange', cRed: 'Rot', cGreen: 'Grün', cBlue: 'Blau', cPink: 'Pink', cPurple: 'Lila',
+      _name: 'Deutsch', sel: 'Auswahl', chain: 'Plug-in-Kette', search: 'Plug-in suchen…', add: 'Hinzufügen', recent: 'Zuletzt', favs: 'Favoriten', all: 'Alle',
       noChain: 'Bis zu 3 Plug-ins aus der Liste hinzufügen (Doppelklick oder „Hinzufügen“).', preset: '(sein Preset)', tail: 'Fahne', mod: 'Notenwert', dest: 'Die Fahne', fade: 'Blenden', keep: 'Original auf einer stummen Spur behalten',
       modN: 'gerade', modD: 'punktiert', modT: 'Triole', cover: 'überdeckt das Folgende', track: 'auf eigener Spur', bars: 'Takt', none: 'keine',
       prep: '1 · Vorbereiten und Plug-ins öffnen', listen: 'Anhören', stop: 'Stopp', render: '2 · Rendern', cancel: 'Abbrechen', dark: 'Dunkel', grey: 'Grau',
@@ -62,7 +68,8 @@
       preparing: 'Wird vorbereitet…', ready: 'Plug-ins einstellen und Rendern drücken. „Anhören“ spielt solo in Schleife.', rendering: 'Rendere {i} von {n}…',
       done: 'Fertig: {n} Spur(en). Cmd+Z in LUNA macht es rückgängig.', failed: 'Fehler: {e}', cancelled: 'Abgebrochen', waiting: 'Warte auf LUNA…', noSession: 'Öffne eine Session in LUNA.',
       copied: 'Bericht kopiert', original: 'Original', tailName: 'Fahne' },
-    it: { _name: 'Italiano', sel: 'Selezione', chain: 'Catena di plug-in', search: 'Cerca plug-in…', add: 'Aggiungi', recent: 'Recenti', favs: 'Preferiti', all: 'Tutti',
+    it: { makers: 'Produttori', other: 'Altri', color: 'Colore', cYellow: 'Giallo', cOrange: 'Arancione', cRed: 'Rosso', cGreen: 'Verde', cBlue: 'Blu', cPink: 'Rosa', cPurple: 'Viola',
+      _name: 'Italiano', sel: 'Selezione', chain: 'Catena di plug-in', search: 'Cerca plug-in…', add: 'Aggiungi', recent: 'Recenti', favs: 'Preferiti', all: 'Tutti',
       noChain: 'Aggiungi fino a 3 plug-in dall’elenco (doppio clic o «Aggiungi»).', preset: '(il suo preset)', tail: 'Coda', mod: 'Figura', dest: 'La coda', fade: 'Dissolvenze', keep: 'Conserva l’originale su una traccia muta',
       modN: 'normale', modD: 'puntata', modT: 'terzina', cover: 'copre ciò che segue', track: 'su traccia a parte', bars: 'batt.', none: 'nessuna',
       prep: '1 · Prepara e apri i plug-in', listen: 'Ascolta', stop: 'Stop', render: '2 · Renderizza', cancel: 'Annulla', dark: 'Scuro', grey: 'Grigio',
@@ -70,7 +77,8 @@
       preparing: 'Preparazione…', ready: 'Regola i plug-in e premi Renderizza. «Ascolta» suona in solo e in loop.', rendering: 'Rendering {i} di {n}…',
       done: 'Fatto: {n} traccia/e. Cmd+Z in LUNA per annullare.', failed: 'Errore: {e}', cancelled: 'Annullato', waiting: 'In attesa di LUNA…', noSession: 'Apri una sessione in LUNA.',
       copied: 'Rapporto copiato', original: 'originale', tailName: 'coda' },
-    pt: { _name: 'Português', sel: 'Seleção', chain: 'Cadeia de plugins', search: 'Procurar plugin…', add: 'Adicionar', recent: 'Recentes', favs: 'Favoritos', all: 'Todos',
+    pt: { makers: 'Fabricantes', other: 'Outros', color: 'Cor', cYellow: 'Amarelo', cOrange: 'Laranja', cRed: 'Vermelho', cGreen: 'Verde', cBlue: 'Azul', cPink: 'Rosa', cPurple: 'Roxo',
+      _name: 'Português', sel: 'Seleção', chain: 'Cadeia de plugins', search: 'Procurar plugin…', add: 'Adicionar', recent: 'Recentes', favs: 'Favoritos', all: 'Todos',
       noChain: 'Adiciona até 3 plugins da lista (duplo clique ou «Adicionar»).', preset: '(o seu preset)', tail: 'Cauda', mod: 'Figura', dest: 'A cauda', fade: 'Fades', keep: 'Guardar o original numa faixa silenciada',
       modN: 'normal', modD: 'pontuada', modT: 'tercina', cover: 'tapa o que vem a seguir', track: 'numa faixa à parte', bars: 'comp.', none: 'sem',
       prep: '1 · Preparar e abrir plugins', listen: 'Ouvir', stop: 'Parar', render: '2 · Renderizar', cancel: 'Cancelar', dark: 'Escuro', grey: 'Cinzento',
@@ -102,13 +110,16 @@
   const errText = (e) => String(e?.message || e);
 
   // ---- Settings --------------------------------------------------------------------------------
-  const opts = { tail: '0', mod: 'n', dest: 'cover', fade: 5, keep: false, ...(store.get('opts') ?? {}) };
-  const saveOpts = () => store.set('opts', opts);
-  const chain = (store.get('chain') ?? []).slice(0, MAX_CHAIN);      // [{ pluginId, name, presetUid }]
-  const saveChain = () => store.set('chain', chain);
+  // Every time the add-on opens it starts clean: no plug-ins in the chain and the default options.
+  // Only the look (theme, colour, language) and the recent plug-ins are remembered.
+  const opts = { tail: '0', mod: 'n', dest: 'cover', fade: 5, keep: false };
+  const saveOpts = () => {};
+  const chain = [];                                                    // [{ pluginId, name, presetUid }]
+  const saveChain = () => {};
   let recents = store.get('recents') ?? [];                           // [{ pluginId, name }]
 
   let theme = store.get('theme') === 'grey' ? 'grey' : 'dark';
+  let color = COLORS.includes(store.get('color')) ? store.get('color') : 'yellow';
   let repaint = () => {};
   let onOptions = () => {};
   const seg = (box, items, current, onPick) => {
@@ -126,13 +137,23 @@
     seg('dest', [['cover', t('cover')], ['track', t('track')]], opts.dest, pick('dest'));
     seg('fade', FADES.map((ms) => [ms, ms ? `${ms} ms` : t('none')]), opts.fade, pick('fade'));
     const noTail = opts.tail === '0';
-    $('mod').style.opacity = noTail || BARS.includes(opts.tail) ? '.45' : '1';
-    $('dest').style.opacity = noTail ? '.45' : '1';
+    $('mod').classList.toggle('off', noTail || BARS.includes(opts.tail));
+    $('dest').classList.toggle('off', noTail);
     $('keep').checked = !!opts.keep;
   }
   function paintStatic() {
     document.documentElement.lang = lang;
     document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset.color = color;
+    $('colorBtn').title = t('color'); $('colorBtn').setAttribute('aria-label', t('color'));
+    $('colorMenu').replaceChildren(...COLORS.map((c) => {
+      const b = document.createElement('button');
+      b.className = c === color ? 'on' : '';
+      b.innerHTML = `<i class="sw" data-color="${c}" data-theme="${theme}"></i><span></span><svg viewBox="0 0 12 12"><path d="M2.5 6.5L5 9L9.5 3.5"/></svg>`;
+      b.querySelector('span').textContent = t(`c${c[0].toUpperCase()}${c.slice(1)}`);
+      b.onclick = () => { color = c; store.set('color', c); closeColors(); paintStatic(); };
+      return b;
+    }));
     $('ver').textContent = `v${VERSION}`;
     $('lang').replaceChildren(...LANGS.map((c) => Object.assign(document.createElement('option'), { value: c, textContent: I18N[c]._name })));
     $('lang').value = lang;
@@ -148,6 +169,10 @@
   $('lang').onchange = () => { lang = $('lang').value; store.set('lang', lang); paintStatic(); repaint(); };
   for (const b of [$('tDark'), $('tGrey')]) b.onclick = () => { theme = b.dataset.t; store.set('theme', theme); paintStatic(); };
   $('keep').onchange = () => { opts.keep = $('keep').checked; saveOpts(); };
+  const closeColors = () => { $('colorMenu').hidden = true; $('colorBtn').classList.remove('open'); };
+  $('colorBtn').onclick = (ev) => { ev.stopPropagation(); const open = $('colorMenu').hidden; $('colorMenu').hidden = !open; $('colorBtn').classList.toggle('open', open); };
+  document.addEventListener('mousedown', (ev) => { if (!ev.target.closest?.('.colors')) closeColors(); });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeColors(); });
   paintStatic();
 
   let luna;
@@ -195,7 +220,7 @@
     function paintSel() {
       const box = $('sel');
       const sel = job ?? selection();
-      if (!sel) { box.textContent = t('noSel'); $('prep').disabled = true; return; }
+      if (!sel) { box.replaceChildren(Object.assign(document.createElement('p'), { className: 'hint', textContent: t('noSel') })); $('prep').disabled = true; return; }
       const div = (text) => Object.assign(document.createElement('div'), { textContent: text });
       const lines = [
         Object.assign(document.createElement('b'), { textContent: sel.tracks.map((x) => x.name.value).join(', ') }),
@@ -218,29 +243,67 @@
       } catch (e) { note('plugins', { e: errText(e) }); found = []; }
       paintPicker();
     }
+    let picked = '';   // the plug-in highlighted in the list
+    let shown = [];    // the plug-ins in the list, in order, for the arrow keys
+    const openMakers = new Set();
     function paintPicker() {
       const q = $('search').value.trim().toLowerCase();
       const ok = (r) => !q || `${r.name} ${r.manufacturer ?? ''}`.toLowerCase().includes(q);
-      const opt = (r) => Object.assign(document.createElement('option'), { value: r.pluginId, textContent: r.manufacturer ? `${r.name} — ${r.manufacturer}` : r.name });
-      const group = (label, rows) => { const g = document.createElement('optgroup'); g.label = label; g.append(...rows.map(opt)); return g; };
-      const keep = $('plugins').value;
-      const groups = [];
-      const rec = recents.filter(ok).filter((r) => !found.length || found.some((f) => f.pluginId === r.pluginId));
-      if (rec.length) groups.push(group(t('recent'), rec));
-      const fav = found.filter((r) => r.favorite && ok(r));
-      if (fav.length) groups.push(group(t('favs'), fav));
-      groups.push(group(t('all'), found.filter(ok)));
-      $('plugins').replaceChildren(...groups);
-      if (keep) $('plugins').value = keep;
+      const kids = [];
+      shown = [];
+      const item = (r, sub) => {
+        const b = document.createElement('button');
+        b.className = `item${sub ? ' sub' : ''}${r.pluginId === picked ? ' on' : ''}`;
+        b.tabIndex = -1;
+        b.setAttribute('role', 'option');
+        b.textContent = r.name;
+        if (r.manufacturer && !sub) b.append(Object.assign(document.createElement('em'), { textContent: ` — ${r.manufacturer}` }));
+        b.title = r.manufacturer ? `${r.name} — ${r.manufacturer}` : r.name;
+        b.onclick = () => { picked = r.pluginId; paintPicker(); };
+        b.ondblclick = () => { picked = r.pluginId; addPlugin(); };
+        shown.push(r.pluginId);
+        return b;
+      };
+      const group = (label, rows) => {
+        if (!rows.length) return;
+        kids.push(Object.assign(document.createElement('div'), { className: 'ghead', textContent: label }), ...rows.map((r) => item(r, false)));
+      };
+      group(t('recent'), recents.filter(ok).filter((r) => !found.length || found.some((f) => f.pluginId === r.pluginId)));
+      group(t('favs'), found.filter((r) => r.favorite && ok(r)));
+      // Everything else, folded by manufacturer. A search opens every group with a match.
+      const makers = new Map();
+      for (const r of found.filter(ok)) { const m = r.manufacturer || t('other'); if (!makers.has(m)) makers.set(m, []); makers.get(m).push(r); }
+      if (makers.size) kids.push(Object.assign(document.createElement('div'), { className: 'ghead', textContent: t('makers') }));
+      for (const m of [...makers.keys()].sort((x, y) => x.localeCompare(y))) {
+        const rows = makers.get(m);
+        const open = !!q || openMakers.has(m);
+        const h = document.createElement('button');
+        h.className = `grp${open ? ' open' : ''}${rows.some((r) => r.pluginId === picked) ? ' has' : ''}`;
+        h.tabIndex = -1;
+        h.innerHTML = '<svg viewBox="0 0 12 12"><path d="M4 2.5L7.5 6L4 9.5"/></svg><span></span><em></em>';
+        h.querySelector('span').textContent = m;
+        h.querySelector('em').textContent = String(rows.length);
+        h.onclick = () => { if (openMakers.has(m)) openMakers.delete(m); else openMakers.add(m); paintPicker(); };
+        kids.push(h);
+        if (open) for (const r of rows) kids.push(item(r, true));
+      }
+      $('plugins').replaceChildren(...kids);
+      $('plugins').querySelector('.item.on')?.scrollIntoView({ block: 'nearest' });
     }
     const nameOf = (id) => found.find((r) => r.pluginId === id)?.name ?? recents.find((r) => r.pluginId === id)?.name ?? id;
     function addPlugin() {
-      const id = $('plugins').value;
+      const id = picked || (shown.length === 1 ? shown[0] : '');
       if (!id || chain.length >= MAX_CHAIN || job) return;
       chain.push({ pluginId: id, name: nameOf(id), presetUid: '' });
       recents = [{ pluginId: id, name: nameOf(id) }, ...recents.filter((r) => r.pluginId !== id)].slice(0, 8);
       store.set('recents', recents);
       saveChain(); paintChain(); paintPicker(); paintSel();
+    }
+    function movePick(d) {
+      if (!shown.length) return;
+      const i = shown.indexOf(picked);
+      picked = shown[Math.max(0, Math.min(shown.length - 1, i < 0 ? 0 : i + d))];
+      paintPicker();
     }
     function paintChain() {
       const box = $('chain');
@@ -249,7 +312,7 @@
       box.replaceChildren(...chain.map((c, i) => {
         const row = document.createElement('div');
         row.className = 'link';
-        row.innerHTML = '<span class="n"></span><span class="nm"></span><select></select><button>✕</button>';
+        row.innerHTML = '<span class="n"></span><span class="nm"></span><select></select><button><svg viewBox="0 0 10 10"><path d="M2 2L8 8M8 2L2 8"/></svg></button>';
         row.querySelector('.n').textContent = String(i + 1);
         row.querySelector('.nm').textContent = c.name; row.querySelector('.nm').title = c.name;
         const sel = row.querySelector('select');
@@ -260,7 +323,7 @@
         }).catch(() => undefined);
         sel.disabled = !!job;
         sel.onchange = () => { c.presetUid = sel.value; saveChain(); };
-        const x = row.querySelector('button'); x.disabled = !!job; x.setAttribute('aria-label', '✕');
+        const x = row.querySelector('button'); x.disabled = !!job; x.setAttribute('aria-label', '×');
         x.onclick = () => { chain.splice(i, 1); saveChain(); paintChain(); paintSel(); };
         return row;
       }));
@@ -400,8 +463,13 @@
     }
 
     $('search').oninput = () => { paintPicker(); clearTimeout(searchTimer); searchTimer = setTimeout(() => void listPlugins(), 300); };
-    $('plugins').ondblclick = addPlugin;
-    $('plugins').onkeydown = (ev) => { if (ev.key === 'Enter') addPlugin(); };
+    const keys = (ev) => {
+      if (ev.key === 'ArrowDown') { ev.preventDefault(); movePick(1); }
+      else if (ev.key === 'ArrowUp') { ev.preventDefault(); movePick(-1); }
+      else if (ev.key === 'Enter') { ev.preventDefault(); addPlugin(); }
+    };
+    $('plugins').onkeydown = keys;
+    $('search').onkeydown = keys;
     $('add').onclick = addPlugin;
     $('prep').onclick = () => void prepare();
     $('listen').onclick = () => void listen();
@@ -410,7 +478,7 @@
     // A report for support: Alt-click the version number.
     $('ver').onclick = async (ev) => {
       if (!ev.altKey) return;
-      const text = JSON.stringify({ version: VERSION, opts, chain, job: job && { S: job.S, E: job.E, tail: job.tail, tracks: job.tracks.map((x) => x.name.value) }, log }, null, 2);
+      const text = JSON.stringify({ version: VERSION, color, theme, opts, chain, job: job && { S: job.S, E: job.E, tail: job.tail, tracks: job.tracks.map((x) => x.name.value) }, log }, null, 2);
       try { await navigator.clipboard.writeText(text); say('copied', {}, 'ok', 3000); } catch { /* nothing to do */ }
     };
     for (const p of [ctx.selectionStart, ctx.selectionStop, ctx.selectionTracks]) p.onChange?.(() => { if (!job) paintSel(); });

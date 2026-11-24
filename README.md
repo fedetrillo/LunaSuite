@@ -25,6 +25,10 @@ replaces the selection, with a tempo-synced tail if you want one.
 - **Edge fades** of 5, 10 or 20 ms, or none.
 - **Keep the original** on a muted track, if you want a safety copy.
 - **Recent and favourite plug-ins** at the top of the list, with search.
+- **Plug-ins by manufacturer:** recent and favourites on top, then each manufacturer folds out
+  to show its plug-ins; the search opens the ones with a match.
+- **Your colour:** yellow, orange, red, green, blue, pink or purple, from the swatch at the top.
+- **Starts clean** every time it opens: empty chain and default options.
 - **Dark and grey themes.**
 - **7 languages:** English, Español, Català, Français, Deutsch, Italiano and Português.
 
