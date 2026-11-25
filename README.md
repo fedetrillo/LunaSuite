@@ -45,6 +45,9 @@ replaces the selection, with a tempo-synced tail if you want one.
 
 The render is LUNA's own bounce: an Add On cannot process audio by itself.
 
+The first time it opens, it asks for your language and then a short guide walks you through the
+window in it; the **?** button brings it back whenever you need it.
+
 ## Support
 
 If something does not work as expected, Alt-click the version number at the top of the window:

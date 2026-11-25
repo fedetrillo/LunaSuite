@@ -7,7 +7,7 @@
 
 (() => {
   const $ = (id) => document.getElementById(id);
-  const VERSION = '1.1.0';
+  const VERSION = '1.1.1';
   const KEY = 'com.fedetrillo.lunasuite.';
   const store = {
     get: (k) => { try { return JSON.parse(localStorage.getItem(KEY + k)); } catch { return null; } },
@@ -118,6 +118,10 @@
   const saveChain = () => {};
   let recents = store.get('recents') ?? [];                           // [{ pluginId, name }]
 
+
+  // The guide: its texts, in every language.
+  for (const [c, v] of Object.entries({"en": {"help": "Quick guide", "helpBtn": "Guide", "tNext": "Next", "tBack": "Back", "tSkip": "Skip", "tDone": "Got it", "langT": "Choose your language", "langX": "The guide and the whole window will use it. You can change it later here, at the top right.", "zt": "Always at hand", "z": "Open this guide again whenever you need it with the ? button.", "q1t": "What you print", "q1": "Select a span on one or more audio tracks in LUNA. Here you see what will be printed.", "q2t": "The chain", "q2": "Add up to three plug-ins from the list (double-click or Add), each with a preset if you like.", "q3t": "Tail, place and fades", "q3": "How long the tail is and whether it covers what follows or goes to its own track, the edge fades, and whether to keep a copy of the original.", "q4t": "Prepare and listen", "q4": "Prepare opens a temporary track with the selection and the chain: tweak the plug-ins and press Listen to hear it.", "q5t": "Render", "q5": "Render prints it over the selection and removes the temporary track; Cmd+Z in LUNA undoes it. Cancel removes it without rendering."}, "es": {"help": "Guía rápida", "helpBtn": "Guía", "tNext": "Siguiente", "tBack": "Atrás", "tSkip": "Saltar", "tDone": "Entendido", "langT": "Elige tu idioma", "langX": "La guía y toda la ventana lo usarán. Puedes cambiarlo luego aquí, arriba a la derecha.", "zt": "Siempre a mano", "z": "Vuelve a esta guía cuando la necesites con el botón ?.", "q1t": "Qué vas a imprimir", "q1": "Selecciona un tramo en una o varias pistas de audio en LUNA. Aquí ves lo que se va a imprimir.", "q2t": "La cadena", "q2": "Añade hasta tres plugins de la lista (doble clic o Añadir), cada uno con un preset si quieres.", "q3t": "Cola, destino y fundidos", "q3": "Cuánto dura la cola y si tapa lo que sigue o va a su propia pista, los fundidos de los bordes y si guardar una copia del original.", "q4t": "Prepara y escucha", "q4": "Preparar abre una pista temporal con la selección y la cadena: ajusta los plugins y pulsa Escuchar para oírlo.", "q5t": "Renderiza", "q5": "Renderizar lo imprime sobre la selección y quita la pista temporal; Cmd+Z en LUNA lo deshace. Cancelar la quita sin renderizar."}, "ca": {"help": "Guia ràpida", "helpBtn": "Guia", "tNext": "Següent", "tBack": "Enrere", "tSkip": "Saltar", "tDone": "Entesos", "langT": "Tria el teu idioma", "langX": "La guia i tota la finestra el faran servir. El pots canviar després aquí, a dalt a la dreta.", "zt": "Sempre a mà", "z": "Torna a aquesta guia quan la necessitis amb el botó ?.", "q1t": "Què imprimiràs", "q1": "Selecciona un tram en una o diverses pistes d’àudio a LUNA. Aquí veus el que s’imprimirà.", "q2t": "La cadena", "q2": "Afegeix fins a tres plugins de la llista (doble clic o Afegir), cadascun amb un preset si vols.", "q3t": "Cua, destí i fosos", "q3": "Quant dura la cua i si tapa el que segueix o va a la seva pròpia pista, els fosos de les vores i si guardar una còpia de l’original.", "q4t": "Prepara i escolta", "q4": "Preparar obre una pista temporal amb la selecció i la cadena: ajusta els plugins i prem Escoltar per sentir-ho.", "q5t": "Renderitza", "q5": "Renderitzar ho imprimeix sobre la selecció i treu la pista temporal; Cmd+Z a LUNA ho desfà. Cancel·lar la treu sense renderitzar."}, "fr": {"help": "Guide rapide", "helpBtn": "Guide", "tNext": "Suivant", "tBack": "Retour", "tSkip": "Passer", "tDone": "Compris", "langT": "Choisissez votre langue", "langX": "Le guide et toute la fenêtre l’utiliseront. Vous pourrez la changer ici, en haut à droite.", "zt": "Toujours à portée", "z": "Rouvrez ce guide quand vous voulez avec le bouton ?.", "q1t": "Ce que vous imprimez", "q1": "Sélectionnez une zone sur une ou plusieurs pistes audio dans LUNA. Ici, vous voyez ce qui sera imprimé.", "q2t": "La chaîne", "q2": "Ajoutez jusqu’à trois plug-ins de la liste (double-clic ou Ajouter), chacun avec un preset si vous voulez.", "q3t": "Queue, destination et fondus", "q3": "La durée de la queue et si elle recouvre la suite ou va sur sa propre piste, les fondus des bords et si garder une copie de l’original.", "q4t": "Préparez et écoutez", "q4": "Préparer ouvre une piste temporaire avec la sélection et la chaîne : réglez les plug-ins et appuyez sur Écouter.", "q5t": "Rendez", "q5": "Rendre l’imprime sur la sélection et retire la piste temporaire ; Cmd+Z dans LUNA l’annule. Annuler la retire sans rendre."}, "de": {"help": "Kurzanleitung", "helpBtn": "Anleitung", "tNext": "Weiter", "tBack": "Zurück", "tSkip": "Überspringen", "tDone": "Verstanden", "langT": "Wähle deine Sprache", "langX": "Die Anleitung und das ganze Fenster verwenden sie. Du kannst sie später hier oben rechts ändern.", "zt": "Immer zur Hand", "z": "Öffne diese Anleitung jederzeit wieder mit dem Button ?.", "q1t": "Was gedruckt wird", "q1": "Wähle in LUNA einen Bereich auf einer oder mehreren Audiospuren. Hier siehst du, was gedruckt wird.", "q2t": "Die Kette", "q2": "Füge bis zu drei Plug-ins aus der Liste hinzu (Doppelklick oder Hinzufügen), jedes auf Wunsch mit Preset.", "q3t": "Ausklang, Ziel und Blenden", "q3": "Wie lang der Ausklang ist und ob er das Folgende überdeckt oder auf eine eigene Spur kommt, die Randblenden und ob eine Kopie des Originals bleibt.", "q4t": "Vorbereiten und anhören", "q4": "Vorbereiten öffnet eine temporäre Spur mit Auswahl und Kette: stell die Plug-ins ein und drück Anhören.", "q5t": "Rendern", "q5": "Rendern druckt es über die Auswahl und entfernt die temporäre Spur; Cmd+Z in LUNA macht es rückgängig. Abbrechen entfernt sie ohne zu rendern."}, "it": {"help": "Guida rapida", "helpBtn": "Guida", "tNext": "Avanti", "tBack": "Indietro", "tSkip": "Salta", "tDone": "Capito", "langT": "Scegli la tua lingua", "langX": "La guida e tutta la finestra la useranno. Puoi cambiarla poi qui, in alto a destra.", "zt": "Sempre a portata di mano", "z": "Riapri questa guida quando ti serve con il pulsante ?.", "q1t": "Cosa stampi", "q1": "Seleziona un tratto su una o più tracce audio in LUNA. Qui vedi cosa verrà stampato.", "q2t": "La catena", "q2": "Aggiungi fino a tre plug-in dalla lista (doppio clic o Aggiungi), ognuno con un preset se vuoi.", "q3t": "Coda, destinazione e dissolvenze", "q3": "Quanto dura la coda e se copre ciò che segue o va su una traccia propria, le dissolvenze ai bordi e se tenere una copia dell’originale.", "q4t": "Prepara e ascolta", "q4": "Prepara apre una traccia temporanea con la selezione e la catena: regola i plug-in e premi Ascolta.", "q5t": "Renderizza", "q5": "Renderizza lo stampa sulla selezione e toglie la traccia temporanea; Cmd+Z in LUNA lo annulla. Annulla la toglie senza renderizzare."}, "pt": {"help": "Guia rápido", "helpBtn": "Guia", "tNext": "Seguinte", "tBack": "Voltar", "tSkip": "Saltar", "tDone": "Percebi", "langT": "Escolhe o teu idioma", "langX": "O guia e toda a janela vão usá-lo. Podes mudá-lo depois aqui, em cima à direita.", "zt": "Sempre à mão", "z": "Volta a este guia quando precisares com o botão ?.", "q1t": "O que vais imprimir", "q1": "Seleciona um troço numa ou várias faixas de áudio no LUNA. Aqui vês o que vai ser impresso.", "q2t": "A cadeia", "q2": "Acrescenta até três plugins da lista (duplo clique ou Adicionar), cada um com um preset se quiseres.", "q3t": "Cauda, destino e fades", "q3": "Quanto dura a cauda e se tapa o que vem a seguir ou vai para uma faixa própria, os fades das pontas e se guardar uma cópia do original.", "q4t": "Prepara e ouve", "q4": "Preparar abre uma faixa temporária com a seleção e a cadeia: ajusta os plugins e carrega em Ouvir.", "q5t": "Renderiza", "q5": "Renderizar imprime-o sobre a seleção e retira a faixa temporária; Cmd+Z no LUNA desfaz. Cancelar retira-a sem renderizar."}})) Object.assign(I18N[c], v);
+  let tour = null;
   let theme = store.get('theme') === 'grey' ? 'grey' : 'dark';
   let color = COLORS.includes(store.get('color')) ? store.get('color') : 'yellow';
   let repaint = () => {};
@@ -143,6 +147,7 @@
   }
   function paintStatic() {
     document.documentElement.lang = lang;
+    $('help').title = t('help'); $('help').setAttribute('aria-label', t('help')); { const q = document.createElement('b'); q.textContent = '?'; $('help').replaceChildren(q); }
     document.documentElement.dataset.theme = theme;
     document.documentElement.dataset.color = color;
     $('colorBtn').title = t('color'); $('colorBtn').setAttribute('aria-label', t('color'));
@@ -496,5 +501,24 @@
     await luna.sessions.ready();
     luna.sessions.focused.onChange(() => void build());
     await build();
+    tour ??= window.AddOnTour?.attach({
+      button: $('help'), key: `${KEY}tourSeen`,
+      labels: () => ({ next: t('tNext'), back: t('tBack'), skip: t('tSkip'), done: t('tDone') }),
+      language: {
+        sel: '#lang',
+        list: () => Object.keys(I18N).map((c) => [c, I18N[c]._name]),
+        current: () => lang,
+        set: (c) => { $('lang').value = c; $('lang').dispatchEvent(new Event('change')); },
+        title: () => t('langT'), text: () => t('langX'),
+      },
+      steps: () => [
+        { sel: 'section.card:has(#sel)', title: () => t('q1t'), text: () => t('q1') },
+        { sel: 'section.card:has(#chain)', title: () => t('q2t'), text: () => t('q2') },
+        { sel: 'section.card:has(.opts)', title: () => t('q3t'), text: () => t('q3') },
+        { sel: '#prep', title: () => t('q4t'), text: () => t('q4') },
+        { sel: '#render', title: () => t('q5t'), text: () => t('q5') },
+        { sel: '#help', title: () => t('zt'), text: () => t('z') },
+      ],
+    });
   })();
 })();

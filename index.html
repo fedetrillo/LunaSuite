@@ -113,11 +113,14 @@
     .status { font-size: 12px; color: var(--dim); text-align: center; }
     .status.ok { color: var(--ok); } .status.bad { color: var(--bad); }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    #help { padding: 0; width: 28px; min-width: 28px; }
+    #help b { background: none; width: auto; height: auto; font-size: 12.5px; }
   </style>
 </head>
 <body>
   <div class="top">
     <h1>LunaSuite <small id="ver"></small></h1>
+    <button id="help"></button>
     <div class="colors">
       <button id="colorBtn" aria-haspopup="true"><i></i></button>
       <div class="menu" id="colorMenu" hidden></div>
@@ -153,6 +156,7 @@
   </main>
   <div class="foot"><div class="status" id="status" role="status"></div></div>
   <script src="vendor/luna.global.js"></script>
+  <script src="tour.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

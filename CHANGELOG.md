@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 — 2026-11-25
+
+- A short getting-started guide: the first time it opens it asks for your language, then walks
+  you through the window in it. The **?** button brings it back.
+
 ## 1.1.0 — 2026-11-24
 
 - New look, in line with the newer add-ons: rounded panels and gradient controls.
