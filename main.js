@@ -7,7 +7,7 @@
 
 (() => {
   const $ = (id) => document.getElementById(id);
-  const VERSION = '1.1.1';
+  const VERSION = '1.1.2';
   const KEY = 'com.fedetrillo.lunasuite.';
   const store = {
     get: (k) => { try { return JSON.parse(localStorage.getItem(KEY + k)); } catch { return null; } },
@@ -484,7 +484,7 @@
     $('ver').onclick = async (ev) => {
       if (!ev.altKey) return;
       const text = JSON.stringify({ version: VERSION, color, theme, opts, chain, job: job && { S: job.S, E: job.E, tail: job.tail, tracks: job.tracks.map((x) => x.name.value) }, log }, null, 2);
-      try { await navigator.clipboard.writeText(text); say('copied', {}, 'ok', 3000); } catch { /* nothing to do */ }
+      try { if (await AddOnCopy(text)) say('copied', {}, 'ok', 5000); } catch { /* nothing to do */ }
     };
     for (const p of [ctx.selectionStart, ctx.selectionStop, ctx.selectionTracks]) p.onChange?.(() => { if (!job) paintSel(); });
     tr.playing.onChange?.(() => repaint());

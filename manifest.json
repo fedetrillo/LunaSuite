@@ -3,12 +3,10 @@
     "id": "com.fedetrillo.lunasuite",
     "title": "LunaSuite",
     "name": "LunaSuite",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "manufacturer": "Fede Trillo",
     "contact": "fedetrillo@gmail.com",
-    "description": [
-        "Render plug-ins onto a selection, AudioSuite style: a chain of up to three plug-ins with presets, several tracks at once, a tempo-synced tail that covers what follows or goes to its own track, edge fades and an optional copy of the original."
-    ],
+    "description": "AudioSuite for LUNA: print plug-ins straight onto audio. Select a span, build a chain of up to three plug-ins, listen, and render it in place, with a tempo-synced tail, edge fades and an optional copy of the original. Several tracks at once. Getting-started guide, 7 languages.",
     "categories": [
         "Mixing & Mastering",
         "Workflow"

@@ -1,8 +1,8 @@
 # LunaSuite for LUNA
 
-Render plug-ins onto a selection, AudioSuite style. Select a span on one or more audio tracks,
-build a chain of up to three plug-ins, tweak and listen, and press Render: the processed audio
-replaces the selection, with a tempo-synced tail if you want one.
+AudioSuite for LUNA: print plug-ins straight onto audio. Select a span, build a chain of up to
+three plug-ins, listen, and render it in place, with a tempo-synced tail, edge fades and an
+optional copy of the original. Several tracks at once.
 
 <p>
   <img src="docs/screenshot-dark.png" alt="LunaSuite, dark theme" width="300">
